@@ -1,0 +1,26 @@
+openapi: 3.0.2
+info:
+  title: Veresk API
+  version: 0.1.0
+  description: Example API app
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: /
+paths:
+  /status:
+    summary: Return health information
+    get:
+      operationId: health.status
+      responses:
+        "200":
+          description: Health summary information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+                    example: "OK"
