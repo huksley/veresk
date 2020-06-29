@@ -2,9 +2,11 @@
 
 import connexion
 from flask import redirect, render_template
+from plot import bp as plot_bp
 
 app = connexion.FlaskApp(__name__)
 app.add_api("api.yaml")
+app.app.register_blueprint(plot_bp)
 
 
 @app.route("/")
