@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'main.js') }}"></script>
+</head>
+
+<body>
+    <input type="button" onclick="sayHello()" value="Say Hello" />
+
+    Existing users:
+    <div>
+        {% for user in users %}
+        <li>
+            <a href="#" onClick="editUser(this)" data-id="{{user._id}}" data-userName="{{user.userName}}">User
+                {{user.userName}}</a>
+
+            [<a href="#" onClick="deleteUser(this)" data-id="{{user._id}}">delete</a>]
+        </li>
+        {% endfor %}
+    </div>
+
+    <form name="addUserForm" onSubmit="saveUser(this, event, undefined); return false;">
+        Add new user <input type="text" name="userName" required="required" pattern="[A-Za-z0-9]{1,20}" />
+        <input type="submit" value="Save" />
+    </form>
+
+    <form name="editUserForm" onSubmit="saveUser(this, event, this.objectId.value); return false;">
+        <input type="hidden" name="objectId" value="" />
+        Edit user <input type="text" name="userName" required="required" pattern="[A-Za-z0-9]{1,20}" />
+        <input type="submit" value="Save" />
+    </form>
+</body>
+
+</html>

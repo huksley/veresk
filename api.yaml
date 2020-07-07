@@ -1,0 +1,96 @@
+openapi: 3.0.2
+info:
+  title: Veresk API
+  version: 0.1.0
+  description: Example API app
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: /
+paths:
+  "/users/{id}":
+    summary: Update user
+    delete:
+      operationId: users.users_delete
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to delete
+          required: true
+          schema:
+            type: string
+            example: "321832891ds"
+      responses:
+        "204":
+          description: User deleted
+    patch:
+      operationId: users.users_update
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to update
+          required: true
+          schema:
+            type: string
+            example: "321832891ds"
+      requestBody:
+        description: Update existing user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "user1"
+      responses:
+        "204":
+          description: User updated
+  /users:
+    summary: Manage users
+    get:
+      operationId: users.users_list
+      responses:
+        "200":
+          description: List all available users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userName:
+                    type: string
+                    example: "user1"
+    post:
+      operationId: users.users_add
+      requestBody:
+        description: Add new user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "user1"
+      responses:
+        "204":
+          description: User added
+  /status:
+    summary: Return health information
+    get:
+      operationId: health.status
+      responses:
+        "200":
+          description: Health summary information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+                    example: "OK"

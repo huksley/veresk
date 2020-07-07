@@ -15,10 +15,12 @@ watchdog = "*"
 argh = "*"
 matplotlib = "*"
 flask-pymongo = "*"
+dnspython = "*"
+isodate = "*"
 
 [requires]
 python_version = "3.7"
 
 [scripts]
-app = "python app.py"
-dev = "watchmedo auto-restart python app.py"
+app = "chamber exec veresk -- python app.py"
+dev = "chamber exec veresk -- watchmedo auto-restart python app.py"
