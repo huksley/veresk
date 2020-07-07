@@ -1,0 +1,5 @@
+tricks:
+  - watchdog.tricks.LoggerTrick:
+      patterns: ["*.py", "*.js", "*.html"]
+  - watchdog.tricks.AutoRestartTrick:
+      patterns: ["*.py", "*.js", "*.html"]

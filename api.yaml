@@ -9,6 +9,24 @@ info:
 servers:
   - url: /
 paths:
+  /users:
+    summary: Manage users
+    post:
+      operationId: users.add
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "user1"
+      responses:
+        "204":
+          description: User added
   /status:
     summary: Return health information
     get:
