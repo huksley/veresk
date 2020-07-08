@@ -12,7 +12,7 @@ paths:
   "/users/{id}":
     summary: Update user
     delete:
-      operationId: users.users_delete
+      operationId: app.users.users_delete
       parameters:
         - name: id
           in: path
@@ -25,7 +25,7 @@ paths:
         "204":
           description: User deleted
     patch:
-      operationId: users.users_update
+      operationId: app.users.users_update
       parameters:
         - name: id
           in: path
@@ -51,7 +51,7 @@ paths:
   /users:
     summary: Manage users
     get:
-      operationId: users.users_list
+      operationId: app.users.users_list
       responses:
         "200":
           description: List all available users
@@ -64,7 +64,7 @@ paths:
                     type: string
                     example: "user1"
     post:
-      operationId: users.users_add
+      operationId: app.users.users_add
       requestBody:
         description: Add new user
         required: true
@@ -82,7 +82,7 @@ paths:
   /status:
     summary: Return health information
     get:
-      operationId: health.status
+      operationId: app.health.status
       responses:
         "200":
           description: Health summary information

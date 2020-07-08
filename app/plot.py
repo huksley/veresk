@@ -4,7 +4,10 @@ from flask import Response, Blueprint
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
+
+matplotlib.use('agg')
 
 bp = Blueprint('plot', __name__, url_prefix='/plot')
 

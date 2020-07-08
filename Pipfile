@@ -22,5 +22,5 @@ isodate = "*"
 python_version = "3.7"
 
 [scripts]
-app = "chamber exec veresk -- python app.py"
-dev = "chamber exec veresk -- watchmedo auto-restart python app.py"
+app = "chamber exec veresk -- python -m app"
+dev = "chamber exec veresk -- watchmedo auto-restart python -- -m app"
