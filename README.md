@@ -14,3 +14,4 @@ pipenv run app
 - https://numpy.org/doc/stable/user/quickstart.html
 - https://stackoverflow.com/questions/50728328/python-how-to-show-matplotlib-in-flask
 - https://github.com/lovasoa/mandelbrot
+- https://tomroelandts.com/articles/how-to-compute-colorful-fractals-using-numpy-and-matplotlib
