@@ -1,6 +1,6 @@
 """Fractal drawing primitives"""
 import io
-from flask import Response, Blueprint
+from flask import Response, Blueprint, request
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
@@ -9,22 +9,27 @@ matplotlib.use('agg')
 
 bp = Blueprint('plot', __name__, url_prefix='/plot')
 
+# pylint: disable=invalid-name
+
 @bp.route('/fractals.png')
 def fractals_png():
     """Create example fractals"""
-    fig = julia(480, 320)
+    complex_real = float(request.args.get('complex_real', -0.42))
+    complex_imaginary = float(request.args.get('complex_imaginary', 0.6))
+    m = 480
+    n = 320
+    print("Creating fractal, m", m, "n", n, "complex_real", complex_real, "complex_imaginary", complex_imaginary)
+    fig = julia(m, n, complex_real, complex_imaginary)
     return Response(fig.getvalue(), mimetype='image/png')
 
-# pylint: disable=invalid-name
-
-def julia(m, n):
+def julia(m, n, complex_real, complex_imaginary):
     """Draws Julia fractal, see example in
     https://tomroelandts.com/articles/how-to-compute-colorful-fractals-using-numpy-and-matplotlib"""
     scale = 300  # Scale.
     x = np.linspace(-m / scale, m / scale, num=m).reshape((1, m))
     y = np.linspace(-n / scale, n / scale, num=n).reshape((n, 1))
     Z = np.tile(x, (n, 1)) + 1j * np.tile(y, (1, m))
-    C = np.full((n, m), -0.42 + 0.6j)
+    C = np.full((n, m), complex(complex_real, complex_imaginary))
     M = np.full((n, m), True, dtype=bool)
     N = np.zeros((n, m))
     for i in range(256):
