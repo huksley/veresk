@@ -1,3 +1,5 @@
+"""General health information endpoint"""
+
 def status():
     """Health status information"""
 

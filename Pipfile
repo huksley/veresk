@@ -24,3 +24,4 @@ python_version = "3.7"
 [scripts]
 app = "chamber exec veresk -- python -m app"
 dev = "chamber exec veresk -- watchmedo auto-restart python -- -m app"
+lint = "chamber exec veresk -- pylint app"
