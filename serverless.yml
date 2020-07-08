@@ -1,0 +1,34 @@
+service: veresk
+
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-apigw-binary
+  
+custom:
+  wsgi:
+    app: app.app
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: non-linux
+  # Add binary images as handled in API gateway
+  apigwBinary:
+    types:
+      - 'image/*'
+      - 'application/font*'
+      - 'application/pdf'
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  region: eu-west-1
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    events:
+      - http: ANY /
+      - http: "ANY {proxy+}"

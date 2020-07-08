@@ -6,6 +6,7 @@
 
 <body>
     <input type="button" onclick="sayHello()" value="Say Hello" />
+    <hr/>
 
     Existing users:
     <div>
@@ -19,16 +20,24 @@
         {% endfor %}
     </div>
 
+    <hr/>
+
     <form name="addUserForm" onSubmit="saveUser(this, event, undefined); return false;">
         Add new user <input type="text" name="userName" required="required" pattern="[A-Za-z0-9]{1,20}" />
         <input type="submit" value="Save" />
     </form>
+
+    <hr/>
 
     <form name="editUserForm" onSubmit="saveUser(this, event, this.objectId.value); return false;">
         <input type="hidden" name="objectId" value="" />
         Edit user <input type="text" name="userName" required="required" pattern="[A-Za-z0-9]{1,20}" />
         <input type="submit" value="Save" />
     </form>
+
+    <hr/>
+
+    <img src="plot/fractals.png"/>
 </body>
 
 </html>

@@ -33,7 +33,7 @@ except PyMongoError as indexing_error:
 @app.route("/")
 def root():
     """Root page"""
-    return redirect("/index.html", 302)
+    return redirect("index.html", 302)
 
 
 @app.route("/index.html")
@@ -51,3 +51,4 @@ def get_mongo():
 def get_app():
     """Get Connexion app instance"""
     return app
+

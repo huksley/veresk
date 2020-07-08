@@ -9,12 +9,12 @@ info:
 servers:
   - url: /
 paths:
-  "/users/{id}":
+  "/users/{user_id}":
     summary: Update user
     delete:
       operationId: app.users.users_delete
       parameters:
-        - name: id
+        - name: user_id
           in: path
           description: ID of user to delete
           required: true
@@ -27,7 +27,7 @@ paths:
     patch:
       operationId: app.users.users_update
       parameters:
-        - name: id
+        - name: user_id
           in: path
           description: ID of user to update
           required: true

@@ -9,7 +9,7 @@ function sayHello() {
  * @param {string|undefined} id
  */
 function saveUser(form, event, id) {
-  fetch(id ? "/users/" + id : "/users", {
+  fetch(id ? "users/" + id : "users", {
     method: id ? "PATCH" : "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ function editUser(link) {
  */
 function deleteUser(link) {
   const id = link.getAttribute("data-id");
-  fetch("/users/" + id, {
+  fetch("users/" + id, {
     method: "DELETE",
   }).then((r) => {
     console.info(r.status);
