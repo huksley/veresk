@@ -27,14 +27,14 @@ mongo = PyMongo(app.app)
 @app.route("/")
 def root():
     """Root page"""
-    return redirect("index.html", 302)
+    fractals = list(mongo.db.fractals.find())
+    return render_template("index.html", fractals=fractals)
 
 
 @app.route("/index.html")
 def index():
-    """Landing page"""
-    fractals = list(mongo.db.fractals.find())
-    return render_template("index.html", fractals=fractals)
+    """Old root page"""
+    return redirect(".", 302)
 
 
 def get_mongo():

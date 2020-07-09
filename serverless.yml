@@ -44,6 +44,7 @@ package:
     - ".gitignore"
     - "node_modules/**"
     - "test/**"
+    - "app/static/preview.png"
 
 functions:
   app:

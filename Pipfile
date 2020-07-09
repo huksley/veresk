@@ -6,13 +6,13 @@ verify_ssl = true
 [dev-packages]
 autopep8 = "*"
 pylint = "*"
+watchdog = "*"
+argh = "*"
 
 [packages]
 flask = "*"
 numpy = "*"
 connexion = {extras = ["swagger-ui"],version = "*"}
-watchdog = "*"
-argh = "*"
 matplotlib = "*"
 flask-pymongo = "*"
 dnspython = "*"
