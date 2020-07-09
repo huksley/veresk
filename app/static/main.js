@@ -1,15 +1,15 @@
 function cls(className) {
-  const l = document.getElementsByClassName(className)
-  const ll = []
+  const l = document.getElementsByClassName(className);
+  const ll = [];
   for (let i = 0; i < l.length; i++) {
-    ll.push(l.item(i))
+    ll.push(l.item(i));
   }
-  return ll
+  return ll;
 }
 
 /**
  * Saves form as new or existing fractal, invoking the API.
- * 
+ *
  * @param {HTMLFormElement} form
  * @param {Event} event
  * @param {string|undefined} id
@@ -27,32 +27,31 @@ function saveFractal(form, event, id) {
   }).then((r) => {
     console.info(r.status);
     window.location = "?";
-    cls("fractals").forEach(e => e.style.display = "block")
-    cls("editFractalForm").forEach(e => e.style.display = "none")
-    cls("addFractalForm").forEach(e => e.style.display = "none")
+    cls("fractals").forEach((e) => (e.style.display = "block"));
+    cls("editFractalForm").forEach((e) => (e.style.display = "none"));
+    cls("addFractalForm").forEach((e) => (e.style.display = "none"));
   });
   event.stopPropagation();
   return false;
 }
 
 function cancel() {
-  cls("mainControls").forEach(e => e.style.display = "block")
-  cls("fractals").forEach(e => e.style.display = "block")
-  cls("editFractalForm").forEach(e => e.style.display = "none")
-  cls("addFractalForm").forEach(e => e.style.display = "none")
+  cls("mainControls").forEach((e) => (e.style.display = "block"));
+  cls("fractals").forEach((e) => (e.style.display = "block"));
+  cls("editFractalForm").forEach((e) => (e.style.display = "none"));
+  cls("addFractalForm").forEach((e) => (e.style.display = "none"));
 }
 
 function showAddFractalForm() {
-  cls("mainControls").forEach(e => e.style.display = "none")
-  cls("fractals").forEach(e => e.style.display = "none")
-  cls("addFractalForm").forEach(e => e.style.display = "block")
-  cls("editFractalForm").forEach(e => e.style.display = "none")
+  cls("mainControls").forEach((e) => (e.style.display = "none"));
+  cls("fractals").forEach((e) => (e.style.display = "none"));
+  cls("addFractalForm").forEach((e) => (e.style.display = "block"));
+  cls("editFractalForm").forEach((e) => (e.style.display = "none"));
 }
-
 
 /**
  * Opens edit form for specified fractal.
- * 
+ *
  * @param {HTMLAnchorElement} link
  */
 function editFractal(link) {
@@ -60,10 +59,10 @@ function editFractal(link) {
   document.editFractalForm.complex_real.value = link.getAttribute("data-complex-real");
   document.editFractalForm.complex_imaginary.value = link.getAttribute("data-complex-imaginary");
 
-  cls("mainControls").forEach(e => e.style.display = "none")
-  cls("fractals").forEach(e => e.style.display = "none")
-  cls("editFractalForm").forEach(e => e.style.display = "block")
-  cls("addFractalForm").forEach(e => e.style.display = "none")
+  cls("mainControls").forEach((e) => (e.style.display = "none"));
+  cls("fractals").forEach((e) => (e.style.display = "none"));
+  cls("editFractalForm").forEach((e) => (e.style.display = "block"));
+  cls("addFractalForm").forEach((e) => (e.style.display = "none"));
 }
 
 /**

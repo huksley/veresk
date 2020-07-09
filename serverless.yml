@@ -4,8 +4,14 @@ plugins:
   - serverless-python-requirements
   - serverless-wsgi
   - serverless-apigw-binary
-  
+  - serverless-domain-manager
+
 custom:
+  customDomain:
+    domainName: veresk.ruslan.org
+    createRoute53Record: true
+    endpointType: regional
+    enabled: true
   wsgi:
     app: app.app
     packRequirements: false
@@ -14,17 +20,30 @@ custom:
   # Add binary images as handled in API gateway
   apigwBinary:
     types:
-      - 'image/*'
-      - 'application/font*'
-      - 'application/pdf'
+      - "image/*"
+      - "application/font*"
+      - "application/pdf"
 
 provider:
   name: aws
   runtime: python3.7
+  timeout: 30
   stage: dev
   region: eu-west-1
   environment:
     MONGO_URI: ${env:MONGO_URI}
+
+package:
+  exclude:
+    - "README.md"
+    - ".editorconfig"
+    - "LICENSE.md"
+    - ".git/**"
+    - ".github/**"
+    - ".vscode/**"
+    - ".gitignore"
+    - "node_modules/**"
+    - "test/**"
 
 functions:
   app:

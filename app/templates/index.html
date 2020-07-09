@@ -1,20 +1,36 @@
 <html>
   <head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generate and share your favorite fractals</title>
+    <meta name="viewport" content="width=500" />
+    <title>Generate and share your favorite fractals</title>
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
+    <link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
+    <link rel="canonical" href="https:&#x2F;&#x2F;veresk.ruslan.org" />
+    <meta name="author" content="Ruslan Gainutdinov" />
+    <meta name="theme-color" content="#4caf50" />
+    <meta
+      name="description"
+      content="Be amazed by the power of fractals and their recursive nature. Fascinating dive into the math!"
+    />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="@huksley_" />
+    <meta property="og:site_name" content="Veresk" />
+    <meta property="og:url" content="https:&#x2F;&#x2F;veresk.ruslan.org" />
+    <meta property="og:title" content="Generate and share your favorite fractals" />
+    <meta
+      property="og:description"
+      content="Be amazed by the power of fractals and their recursive nature. Fascinating dive into the math!"
+    />
+    <meta property="og:locale" content="en-us" />
+    <!-- meta property="og:image" content="{{ url_for('static', filename = 'preview.png') }}" --->
+    <meta property="og:image" content="https://raw.githack.com/huksley/veresk/master/app/static/preview.png" />
+    <meta property="og:type" content="article" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
     />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename = 'main.css') }}"
-    />
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename = 'main.js') }}"
-    ></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'main.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename = 'main.js') }}"></script>
   </head>
 
   <body>
@@ -51,40 +67,18 @@
             data-complex-imaginary="{{fractal.complex_imaginary}}"
             >Edit</a
           >
-          <a href="#" onClick="deleteFractal(this)" data-id="{{fractal._id}}"
-            >Delete</a
-          >
+          <a href="#" onClick="deleteFractal(this)" data-id="{{fractal._id}}">Delete</a>
         </span>
       </span>
       {% endfor %}
     </div>
 
-    <form
-      name="addFractalForm"
-      class="addFractalForm"
-      onSubmit="saveFractal(this, event, undefined); return false;"
-    >
+    <form name="addFractalForm" class="addFractalForm" onSubmit="saveFractal(this, event, undefined); return false;">
       <span class="title">Add new fractal</span>
-      <input
-        type="text"
-        name="complex_real"
-        required="required"
-        value="-0.42"
-        pattern="[0-9.-]{1,20}"
-      />
-      <input
-        type="text"
-        name="complex_imaginary"
-        required="required"
-        value="0.6"
-        pattern="[0-9.-]{1,20}"
-      />
+      <input type="text" name="complex_real" required="required" value="-0.42" pattern="[0-9.-]{1,20}" />
+      <input type="text" name="complex_imaginary" required="required" value="0.6" pattern="[0-9.-]{1,20}" />
       <input type="submit" value="Save" />
-      <input
-        type="submit"
-        value="Cancel"
-        onClick="cancel(event); return false;"
-      />
+      <input type="submit" value="Cancel" onClick="cancel(event); return false;" />
     </form>
 
     <form
@@ -94,24 +88,10 @@
     >
       <input type="hidden" name="objectId" value="" />
       <span class="title">Edit fractal</span>
-      <input
-        type="text"
-        name="complex_real"
-        required="required"
-        pattern="[0-9.-]{1,20}"
-      />
-      <input
-        type="text"
-        name="complex_imaginary"
-        required="required"
-        pattern="[0-9.-]{1,20}"
-      />
+      <input type="text" name="complex_real" required="required" pattern="[0-9.-]{1,20}" />
+      <input type="text" name="complex_imaginary" required="required" pattern="[0-9.-]{1,20}" />
       <input type="submit" value="Save" />
-      <input
-        type="submit"
-        value="Cancel"
-        onClick="cancel(event); return false;"
-      />
+      <input type="submit" value="Cancel" onClick="cancel(event); return false;" />
     </form>
   </body>
 </html>

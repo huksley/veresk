@@ -33,15 +33,14 @@
 }
 
 form .title {
-    display: block;
-    font-size: 2em;
+  display: block;
+  font-size: 2em;
 }
 
-form input[type="text"]
-{ 
-    display: block;
-    padding: 1em;
-    margin: 1em;
+form input[type="text"] {
+  display: block;
+  padding: 1em;
+  margin: 1em;
 }
 
 .mainControls a,
