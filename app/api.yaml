@@ -2,83 +2,71 @@ openapi: 3.0.2
 info:
   title: Veresk API
   version: 0.1.0
-  description: Example API app
+  description: Fractal showcase app
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
   - url: /
 paths:
-  "/users/{user_id}":
-    summary: Update user
+  "/fractals/{fractal_id}":
+    summary: Update fractal
     delete:
-      operationId: app.users.users_delete
+      operationId: app.fractals.fractals_delete
       parameters:
-        - name: user_id
+        - name: fractal_id
           in: path
-          description: ID of user to delete
+          description: ID of fractal to delete
           required: true
           schema:
             type: string
             example: "321832891ds"
       responses:
         "204":
-          description: User deleted
+          description: Fractal deleted
     patch:
-      operationId: app.users.users_update
+      operationId: app.fractals.fractals_update
       parameters:
-        - name: user_id
+        - name: fractal_id
           in: path
-          description: ID of user to update
+          description: ID of fractal to update
           required: true
           schema:
             type: string
-            example: "321832891ds"
+            example: "deadbeef"
       requestBody:
-        description: Update existing user
+        description: Update existing fractal
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: "user1"
+              "$ref": "#/components/schemas/fractal"
       responses:
         "204":
-          description: User updated
-  /users:
-    summary: Manage users
+          description: Fractal updated
+  /fractals:
+    summary: Manage fractals
     get:
-      operationId: app.users.users_list
+      operationId: app.fractals.fractals_list
       responses:
         "200":
-          description: List all available users
+          description: List all available fractals
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  userName:
-                    type: string
-                    example: "user1"
+                "$ref": "#/components/schemas/fractal"
     post:
-      operationId: app.users.users_add
+      operationId: app.fractals.fractals_add
       requestBody:
-        description: Add new user
+        description: Add new fractal
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: "user1"
+              "$ref": "#/components/schemas/fractal"
       responses:
         "204":
-          description: User added
+          description: Fractal added
   /status:
     summary: Return health information
     get:
@@ -94,3 +82,14 @@ paths:
                   summary:
                     type: string
                     example: "OK"
+components:
+  schemas:
+    fractal:
+      type: object
+      properties:
+        complex_real:
+          type: number
+          example: -0.42
+        complex_imaginary:
+          type: number
+          example: 0.6

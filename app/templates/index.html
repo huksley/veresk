@@ -1,46 +1,117 @@
 <html>
+  <head>
 
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
-    <script type="text/javascript" src="{{ url_for('static', filename = 'main.js') }}"></script>
-</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate and share your favorite fractals</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'main.css') }}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename = 'main.js') }}"
+    ></script>
+  </head>
 
-<body>
-    <a class="github-fork-ribbon" href="https://github.com/huksley/veresk" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
-        
-    <input type="button" onclick="sayHello()" value="Say Hello" />
-    <hr/>
+  <body>
+    <a
+      class="github-fork-ribbon"
+      href="https://github.com/huksley/veresk"
+      data-ribbon="Fork me on GitHub"
+      title="Fork me on GitHub"
+      >Fork me on GitHub</a
+    >
 
-    Existing users:
-    <div>
-        {% for user in users %}
-        <li>
-            <a href="#" onClick="editUser(this)" data-id="{{user._id}}" data-userName="{{user.userName}}">User
-                {{user.userName}}</a>
+    <h1>Generate and share your favorite fractals</h1>
 
-            [<a href="#" onClick="deleteUser(this)" data-id="{{user._id}}">delete</a>]
-        </li>
-        {% endfor %}
+    <span class="mainControls">
+      <a href="#" onClick="showAddFractalForm(this)">Add fractal</a>
+    </span>
+
+    <div class="fractals">
+      {% for fractal in fractals %}
+      <span class="fractal">
+        <span class="label">
+          c = {{fractal.complex_real}} + {{fractal.complex_imaginary}}*i
+        </span>
+        <img
+          src="plot/fractals.png?complex_real={{fractal.complex_real}}&amp;complex_imaginary={{fractal.complex_imaginary}}"
+          width="480"
+        />
+        <span class="controls">
+          <a
+            href="#"
+            onClick="editFractal(this)"
+            data-id="{{fractal._id}}"
+            data-complex-real="{{fractal.complex_real}}"
+            data-complex-imaginary="{{fractal.complex_imaginary}}"
+            >Edit</a
+          >
+          <a href="#" onClick="deleteFractal(this)" data-id="{{fractal._id}}"
+            >Delete</a
+          >
+        </span>
+      </span>
+      {% endfor %}
     </div>
 
-    <hr/>
-
-    <form name="addUserForm" onSubmit="saveUser(this, event, undefined); return false;">
-        Add new user <input type="text" name="userName" required="required" pattern="[A-Za-z0-9]{1,20}" />
-        <input type="submit" value="Save" />
+    <form
+      name="addFractalForm"
+      class="addFractalForm"
+      onSubmit="saveFractal(this, event, undefined); return false;"
+    >
+      <span class="title">Add new fractal</span>
+      <input
+        type="text"
+        name="complex_real"
+        required="required"
+        value="-0.42"
+        pattern="[0-9.-]{1,20}"
+      />
+      <input
+        type="text"
+        name="complex_imaginary"
+        required="required"
+        value="0.6"
+        pattern="[0-9.-]{1,20}"
+      />
+      <input type="submit" value="Save" />
+      <input
+        type="submit"
+        value="Cancel"
+        onClick="cancel(event); return false;"
+      />
     </form>
 
-    <hr/>
-
-    <form name="editUserForm" onSubmit="saveUser(this, event, this.objectId.value); return false;">
-        <input type="hidden" name="objectId" value="" />
-        Edit user <input type="text" name="userName" required="required" pattern="[A-Za-z0-9]{1,20}" />
-        <input type="submit" value="Save" />
+    <form
+      name="editFractalForm"
+      class="editFractalForm"
+      onSubmit="saveFractal(this, event, this.objectId.value); return false;"
+    >
+      <input type="hidden" name="objectId" value="" />
+      <span class="title">Edit fractal</span>
+      <input
+        type="text"
+        name="complex_real"
+        required="required"
+        pattern="[0-9.-]{1,20}"
+      />
+      <input
+        type="text"
+        name="complex_imaginary"
+        required="required"
+        pattern="[0-9.-]{1,20}"
+      />
+      <input type="submit" value="Save" />
+      <input
+        type="submit"
+        value="Cancel"
+        onClick="cancel(event); return false;"
+      />
     </form>
-
-    <hr/>
-
-    <img src="plot/fractals.png"/>
-</body>
-
+  </body>
 </html>

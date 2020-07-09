@@ -24,12 +24,6 @@ app.app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.app.config["MONGO_URI"] = os.environ['MONGO_URI']
 mongo = PyMongo(app.app)
 
-try:
-    mongo.db.users.create_index([('userName', ASCENDING)], unique=True)
-except PyMongoError as indexing_error:
-    print("Failed to create indexes: ", indexing_error)
-
-
 @app.route("/")
 def root():
     """Root page"""
@@ -39,8 +33,8 @@ def root():
 @app.route("/index.html")
 def index():
     """Landing page"""
-    all_users = list(mongo.db.users.find())
-    return render_template("index.html", users=all_users)
+    fractals = list(mongo.db.fractals.find())
+    return render_template("index.html", fractals=fractals)
 
 
 def get_mongo():

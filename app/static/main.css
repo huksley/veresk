@@ -1,0 +1,59 @@
+.fractal {
+  width: 480px;
+  display: inline-block;
+  text-align: center;
+  margin: 1em;
+}
+
+.fractal img {
+  /** keep in sync with plot.py */
+  width: 480px;
+  height: 320px;
+  border: 1px solid #4caf50;
+}
+
+.fractal .label {
+  display: inline-block;
+  width: 480px;
+  margin: 1em;
+}
+
+.fractal .controls {
+  display: inline-block;
+  width: 480px;
+  margin: 1em;
+}
+
+.addFractalForm {
+  display: none;
+}
+
+.editFractalForm {
+  display: none;
+}
+
+form .title {
+    display: block;
+    font-size: 2em;
+}
+
+form input[type="text"]
+{ 
+    display: block;
+    padding: 1em;
+    margin: 1em;
+}
+
+.mainControls a,
+.controls a,
+button,
+input[type="submit"] {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 0.6em 0.7em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
