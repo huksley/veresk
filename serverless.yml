@@ -10,7 +10,7 @@ custom:
   customDomain:
     domainName: veresk.ruslan.org
     createRoute53Record: true
-    endpointType: regional
+    endpointType: edge
     enabled: true
   wsgi:
     app: app.app

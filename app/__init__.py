@@ -2,7 +2,7 @@
 
 import os
 
-from flask import redirect, render_template
+from flask import redirect, render_template, send_from_directory, request
 from connexion import FlaskApp
 from flask_pymongo import PyMongo
 
@@ -24,12 +24,23 @@ app.app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.app.config["MONGO_URI"] = os.environ['MONGO_URI']
 mongo = PyMongo(app.app)
 
+
 @app.route("/")
 def root():
     """Root page"""
     fractals = list(mongo.db.fractals.find())
     return render_template("index.html", fractals=fractals)
 
+
+@app.route("/favicon.ico")
+def favicon():
+    """Redirect to proper favicon"""
+    return redirect("static/icon.svg", code=302)
+
+@app.route('/robots.txt')
+@app.route('/site.webmanifest')
+def static_from_root():
+    return send_from_directory(app.app.static_folder, request.path[1:])
 
 @app.route("/index.html")
 def index():
@@ -45,4 +56,3 @@ def get_mongo():
 def get_app():
     """Get Connexion app instance"""
     return app
-
