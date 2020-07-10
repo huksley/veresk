@@ -29,6 +29,7 @@ provider:
   runtime: python3.7
   timeout: 30
   stage: dev
+  memorySize: 2048
   region: eu-west-1
   environment:
     MONGO_URI: ${env:MONGO_URI}
