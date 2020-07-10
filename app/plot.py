@@ -1,37 +1,40 @@
 """Fractal drawing primitives"""
 import io
+import threading
 from flask import Response, Blueprint, request
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
-import threading
 
-sem = threading.Semaphore()
+
+lock = threading.Lock()
 matplotlib.use('agg')
 
 bp = Blueprint('plot', __name__, url_prefix='/plot')
 
 # pylint: disable=invalid-name
 
+
 @bp.route('/fractals.png')
 def fractals_png():
     """Create example fractals"""
-    sem.acquire()
+    complex_real = float(request.args.get('complex_real', -0.42))
+    complex_imaginary = float(request.args.get('complex_imaginary', 0.6))
+    m = 480*2
+    n = 320*2
+    print("Creating fractal, m", m, "n", n, "complex_real",
+          complex_real, "complex_imaginary", complex_imaginary)
     try:
-        complex_real = float(request.args.get('complex_real', -0.42))
-        complex_imaginary = float(request.args.get('complex_imaginary', 0.6))
-        m = 480*2
-        n = 320*2
-        print("Creating fractal, m", m, "n", n, "complex_real", complex_real, "complex_imaginary", complex_imaginary)
-        fig = julia(m, n, complex_real, complex_imaginary)
-        resp = Response(fig.getvalue(), mimetype='image/png')
-        resp.headers['Access-Control-Allow-Origin'] = '*'
-        resp.headers['Cache-Control'] = "public, max-age=31536000"
+        with lock:
+            fig = julia(m, n, complex_real, complex_imaginary)
     except ValueError as e:
         print("Failed to create", e)
-    finally:
-        sem.release()
+        return ("Internal server error", 500)
+    resp = Response(fig.getvalue(), mimetype='image/png')
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Cache-Control'] = "public, max-age=31536000"
     return resp
+
 
 def julia(m, n, complex_real, complex_imaginary):
     """Draws Julia fractal, see example in
