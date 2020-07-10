@@ -64,7 +64,7 @@ pipenv run deploy
 ## Licenses
 
 - See LICENSE.md, with the exception of:
-- `app/plot.py, `def julia`: (C) Tom Roelandts, https://tomroelandts.com/articles/how-to-compute-colorful-fractals-using-numpy-and-matplotlib
+- `app/plot.py`, `def julia`: (C) Tom Roelandts, https://tomroelandts.com/articles/how-to-compute-colorful-fractals-using-numpy-and-matplotlib
 - `app/static/icon.svg`: fractal by Bohdan Burmich from the Noun Project (see https://thenounproject.com/term/fractal/224056/)
 
 ## Links
