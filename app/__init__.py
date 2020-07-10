@@ -9,10 +9,8 @@ from flask_pymongo import PyMongo
 from pymongo import ASCENDING
 from pymongo.errors import PyMongoError
 
-from app.plot import bp as plot_bp
-
-import app.classes.MongoJSONEncoder as MongoJSONEncoder
-import app.classes.ObjectIdConverter as ObjectIdConverter
+from .plot import bp as plot_bp
+from .helpers import MongoJSONEncoder, ObjectIdConverter
 
 
 app = FlaskApp(__name__)
@@ -37,10 +35,12 @@ def favicon():
     """Redirect to proper favicon"""
     return redirect("static/icon.svg", code=302)
 
+
 @app.route('/robots.txt')
 @app.route('/site.webmanifest')
 def static_from_root():
     return send_from_directory(app.app.static_folder, request.path[1:])
+
 
 @app.route("/index.html")
 def index():

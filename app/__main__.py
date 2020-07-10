@@ -1,5 +1,5 @@
-"""Web app entry point"""
-from app import get_app
+"""Web app entry point, when running as python -m app"""
+from . import get_app
 
 app = get_app()
 
