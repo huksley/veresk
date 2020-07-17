@@ -1,5 +1,0 @@
-tricks:
-  - watchdog.tricks.LoggerTrick:
-      patterns: ["*.py"]
-  - watchdog.tricks.AutoRestartTrick:
-      patterns: ["*.py"]

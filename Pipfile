@@ -23,7 +23,7 @@ python_version = "3.7"
 
 [scripts]
 app = "chamber exec veresk -- python -m app"
-dev = "chamber exec veresk -- watchmedo auto-restart --recursive python -- -m app"
+dev = "chamber exec veresk -- watchmedo auto-restart --recursive -p '*.py;*.yaml' python -- -m app"
 lint = "chamber exec veresk -- pylint app"
 deploy = "chamber exec veresk -- npx serverless deploy"
 serve = "chamber exec veresk -- npx serverless wsgi serve"
