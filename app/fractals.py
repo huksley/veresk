@@ -38,9 +38,9 @@ def fractals_update(fractal_id, **request):
         existing = mongo.db.fractals.find_one({
             "_id": ObjectId(fractal_id)
         })
-        if dev() or existing["user"] != get_user_hash():
+        if not dev() and existing["user"] != get_user_hash():
             print("Update: Not found or no access: ",
-                  fractal_id, "user", get_user_hash())
+                  fractal_id, "user", get_user_hash(), "fractal user", existing["user"])
             return (None, 403)
         saved = mongo.db.fractals.update_one({"_id": ObjectId(fractal_id)}, {"$set": {
             "complex_real": body["complex_real"],
@@ -61,7 +61,7 @@ def fractals_delete(fractal_id):
     existing = mongo.db.fractals.find_one({
         "_id": ObjectId(fractal_id)
     })
-    if dev() or existing["user"] != get_user_hash():
+    if not dev() and existing["user"] != get_user_hash():
         print("Delete: Not found or no access: ",
               fractal_id, "user", get_user_hash())
         return (None, 403)

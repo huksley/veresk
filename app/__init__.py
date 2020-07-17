@@ -33,13 +33,14 @@ app.app.config['TEMPLATES_AUTO_RELOAD'] = 1 if dev() else 0
 if dev():
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
-oauth_blueprint = make_github_blueprint(
-    client_id=os.environ[("" if dev() else "PROD_") +
-                         "GITHUB_OAUTH_CLIENT_ID"],
-    client_secret=os.environ[("" if dev() else "PROD_") +
-                             "GITHUB_OAUTH_CLIENT_SECRET"],
-)
-app.app.register_blueprint(oauth_blueprint, url_prefix="/login")
+if os.environ["GITHUB_OAUTH_CLIENT_ID"] is not "":
+    oauth_blueprint = make_github_blueprint(
+        client_id=os.environ[("" if dev() else "PROD_") +
+                            "GITHUB_OAUTH_CLIENT_ID"],
+        client_secret=os.environ[("" if dev() else "PROD_") +
+                                "GITHUB_OAUTH_CLIENT_SECRET"],
+    )
+    app.app.register_blueprint(oauth_blueprint, url_prefix="/login")
 
 app.app.config["MONGO_URI"] = os.environ['MONGO_URI']
 mongo = PyMongo(app.app)
@@ -58,6 +59,8 @@ def get_user_hash():
     Return hashed ID of user.
     Locally we use 0 to indicate root, remotely we indicate None for anonymous.
     """
+    if os.environ["GITHUB_OAUTH_CLIENT_ID"] is "":
+        return None
     if not github.authorized:
         return None
     user_hash = sha256()
@@ -80,6 +83,8 @@ def root():
 @app.route("/user")
 def user():
     """Root page"""
+    if os.environ["GITHUB_OAUTH_CLIENT_ID"] is "":
+        return ("No login support", 200)
     if not github.authorized:
         return redirect(url_for("github.login"))
     resp = github.get("/user")

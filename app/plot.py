@@ -24,6 +24,18 @@ def fractals_png():
     """Create example fractals"""
     complex_real = float(request.args.get('complex_real', -0.42))
     complex_imaginary = float(request.args.get('complex_imaginary', 0.6))
+
+    if os.environ["CACHE_BUCKET"] is "":
+        try:
+            binary = fractals_generate_png(complex_real, complex_imaginary)
+        except ValueError as e:
+            print("Failed to create", e)
+            return ("Internal server error", 500)
+        resp = Response(binary, mimetype='image/png')
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers['Cache-Control'] = "public, max-age=31536000"
+        return resp
+
     key = "cache/img" + str(complex_real) + "x" + str(complex_imaginary) + ".png"
     print("Checking cache, bucket", os.environ["CACHE_BUCKET"], "key", key)
     try:
@@ -37,18 +49,12 @@ def fractals_png():
         return resp
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
-            m = 480*2
-            n = 320*2
-            print("Creating fractal, m", m, "n", n, "complex_real",
-                complex_real, "complex_imaginary", complex_imaginary)
+            obj = s3.Object(os.environ["CACHE_BUCKET"], key)
             try:
-                with lock:
-                    fig = julia(m, n, complex_real, complex_imaginary)
+                binary = fractals_generate_png(complex_real, complex_imaginary)
             except ValueError as e:
                 print("Failed to create", e)
                 return ("Internal server error", 500)
-            binary = fig.getvalue()
-            obj = s3.Object(os.environ["CACHE_BUCKET"], key)
             obj.put(Body=binary)
             resp = Response(binary, mimetype='image/png')
             resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -56,8 +62,17 @@ def fractals_png():
             return resp
         else:
             print("AWS error", e.response['Error']['Code'])
-            return (e.response['Error']['Code'], 500)
+            return ("Internal server error", 500)
 
+def fractals_generate_png(complex_real, complex_imaginary):
+    m = 480*2
+    n = 320*2
+    print("Creating fractal, m", m, "n", n, "complex_real",
+        complex_real, "complex_imaginary", complex_imaginary)
+    with lock:
+        fig = julia(m, n, complex_real, complex_imaginary)
+    binary = fig.getvalue()
+    return binary
 
 def julia(m, n, complex_real, complex_imaginary):
     """Draws Julia fractal, see example in

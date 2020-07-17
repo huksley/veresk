@@ -26,14 +26,14 @@ This app requires MongoDB instance available (running in the docker or in the cl
 MONGO_URI=mongodb://localhost/test
 ```
 
-## Running
+## Running locally
 
 You need to have Python 3.7 installed.
 
 ```
 pip install pipenv
 pipenv install
-MONGO_URI=mongodb://localhost/test pipenv run python -m app
+MONGO_URI=mongodb://localhost/test FLASK_SECRET_KEY=123 GITHUB_OAUTH_CLIENT_ID= GITHUB_OAUTH_CLIENT_SECRET= CACHE_BUCKET= pipenv run python -m app
 ```
 
 Your app will be available at http://localhost:8080
@@ -42,13 +42,29 @@ Your app will be available at http://localhost:8080
 
 This project uses [chamber CLI](https://github.com/segmentio/chamber), [AWS](https://aws.amazon.com/), [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and [Serverless framework](https://serverless.com) to deploy to the cloud. This result in a highly available, cost-effective, secure and environment to host and serve hobby projects.
 
-### Configure MongoDB atlas instance
+### Configure MongoDB instance
 
-Create MongoDB instance and save `MONGO_URI` in the AWS Parameter store as `/veresk/MONGO_URI` prefix. Encrypt using default key (do not use custom KMS key).
+Create MongoDB instance using cloud service (for example MongoDB atlas).
+
+You will get URL in the form of:
+
+```
+mongodb+srv://username:password@server.mongodb.net/db
+```
 
 ### Create AWS account in the cloud
 
 The way this app uses AWS services, hosting this app will cost you 0.1$ monthly or less, depending on the traffic. Make sure you are protecting your AWS account as the malicious actions of other parties or mistakes can result in a large bill. Read more [here](https://medium.com/@ruslanfg/wip-introduction-to-aws-665d4e9af0c2) about getting started in AWS.
+
+### Configuring other resources in the cloud
+
+To run successfully full fledged version of the app, number of parameters needs to be set using AWS Parameter Store as `/veresk/NAME_OF_VARIABLE` key. Encrypt using default key (do not use custom KMS key).
+
+* MONGO_URI - URL to previously configured MongoDB instance
+* FLASK_SECRET_KEY - Private key for your Flask app
+* GITHUB_OAUTH_CLIENT_ID - Credentials for GitHub login (create app in Developer settings)
+* GITHUB_OAUTH_CLIENT_SECRET - Credentials for GitHub login
+* CACHE_BUCKET - Create and give access to S3 bucket to store image cache
 
 ### Deploy instance to the cloud
 

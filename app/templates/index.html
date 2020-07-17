@@ -66,7 +66,7 @@
           width="480"
         />
         <span class="controls">
-          {% if dev or fractal.user == user_hash %}
+          {% if (dev and user_hash == None) or fractal.user == user_hash %}
           <a
             href="#"
             onClick="editFractal(this)"
