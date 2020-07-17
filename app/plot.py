@@ -5,8 +5,12 @@ from flask import Response, Blueprint, request
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
+import os
+import boto3
+import botocore
+from werkzeug.wsgi import FileWrapper
 
-
+s3 = boto3.resource('s3')
 lock = threading.Lock()
 matplotlib.use('agg')
 
@@ -20,20 +24,39 @@ def fractals_png():
     """Create example fractals"""
     complex_real = float(request.args.get('complex_real', -0.42))
     complex_imaginary = float(request.args.get('complex_imaginary', 0.6))
-    m = 480*2
-    n = 320*2
-    print("Creating fractal, m", m, "n", n, "complex_real",
-          complex_real, "complex_imaginary", complex_imaginary)
+    key = "cache/img" + str(complex_real) + "x" + str(complex_imaginary) + ".png"
+    print("Checking cache, bucket", os.environ["CACHE_BUCKET"], "key", key)
     try:
-        with lock:
-            fig = julia(m, n, complex_real, complex_imaginary)
-    except ValueError as e:
-        print("Failed to create", e)
-        return ("Internal server error", 500)
-    resp = Response(fig.getvalue(), mimetype='image/png')
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    resp.headers['Cache-Control'] = "public, max-age=31536000"
-    return resp
+        s3.Object(os.environ["CACHE_BUCKET"], key).load()
+        bucket = s3.Bucket(os.environ["CACHE_BUCKET"])
+        obj = bucket.Object(key)
+        print("Sending cached, bucket", os.environ["CACHE_BUCKET"], "key", key)
+        resp = Response(io.BytesIO(obj.get()['Body'].read()), mimetype='image/png')
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers['Cache-Control'] = "public, max-age=31536000"
+        return resp
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            m = 480*2
+            n = 320*2
+            print("Creating fractal, m", m, "n", n, "complex_real",
+                complex_real, "complex_imaginary", complex_imaginary)
+            try:
+                with lock:
+                    fig = julia(m, n, complex_real, complex_imaginary)
+            except ValueError as e:
+                print("Failed to create", e)
+                return ("Internal server error", 500)
+            binary = fig.getvalue()
+            obj = s3.Object(os.environ["CACHE_BUCKET"], key)
+            obj.put(Body=binary)
+            resp = Response(binary, mimetype='image/png')
+            resp.headers['Access-Control-Allow-Origin'] = '*'
+            resp.headers['Cache-Control'] = "public, max-age=31536000"
+            return resp
+        else:
+            print("AWS error", e.response['Error']['Code'])
+            return (e.response['Error']['Code'], 500)
 
 
 def julia(m, n, complex_real, complex_imaginary):

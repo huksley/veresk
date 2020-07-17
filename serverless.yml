@@ -36,9 +36,27 @@ provider:
   environment:
     MONGO_URI: ${env:MONGO_URI}
     FLASK_SECRET_KEY: ${env:FLASK_SECRET_KEY}
+    CACHE_BUCKET: ${env:CACHE_BUCKET}
     PROD_GITHUB_OAUTH_CLIENT_ID: ${env:PROD_GITHUB_OAUTH_CLIENT_ID}
     PROD_GITHUB_OAUTH_CLIENT_SECRET: ${env:PROD_GITHUB_OAUTH_CLIENT_SECRET}
-
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${env:CACHE_BUCKET}
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${env:CACHE_BUCKET}
+            - "/*"
 package:
   exclude:
     - "README.md"

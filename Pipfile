@@ -18,6 +18,7 @@ flask-pymongo = "*"
 dnspython = "*"
 isodate = "*"
 flask-dance = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.7"
