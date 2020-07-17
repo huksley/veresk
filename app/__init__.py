@@ -36,9 +36,9 @@ if dev():
 if os.environ["GITHUB_OAUTH_CLIENT_ID"] is not "":
     oauth_blueprint = make_github_blueprint(
         client_id=os.environ[("" if dev() else "PROD_") +
-                            "GITHUB_OAUTH_CLIENT_ID"],
+                             "GITHUB_OAUTH_CLIENT_ID"],
         client_secret=os.environ[("" if dev() else "PROD_") +
-                                "GITHUB_OAUTH_CLIENT_SECRET"],
+                                 "GITHUB_OAUTH_CLIENT_SECRET"],
     )
     app.app.register_blueprint(oauth_blueprint, url_prefix="/login")
 
@@ -59,7 +59,7 @@ def get_user_hash():
     Return hashed ID of user.
     Locally we use 0 to indicate root, remotely we indicate None for anonymous.
     """
-    if os.environ["GITHUB_OAUTH_CLIENT_ID"] is "":
+    if os.environ[("" if dev() else "PROD_") + "GITHUB_OAUTH_CLIENT_ID"] is "":
         return None
     if not github.authorized:
         return None
@@ -74,16 +74,17 @@ def get_user_hash():
 def root():
     """Root page"""
     fractals = list(mongo.db.fractals.find())
-    content = render_template("index.html", fractals=fractals, github=github, dev=dev(), user_hash=get_user_hash())
+    content = render_template("index.html", fractals=fractals,
+                              github=github, dev=dev(), user_hash=get_user_hash())
     resp = Response(content)
-    resp.headers['Strict-Transport-Security'] = 'max-age=63072000' # 2 years
+    resp.headers['Strict-Transport-Security'] = 'max-age=63072000'  # 2 years
     return resp
 
 
 @app.route("/user")
 def user():
     """Root page"""
-    if os.environ["GITHUB_OAUTH_CLIENT_ID"] is "":
+    if os.environ[("" if dev() else "PROD_") + "GITHUB_OAUTH_CLIENT_ID"] is "":
         return ("No login support", 200)
     if not github.authorized:
         return redirect(url_for("github.login"))
@@ -123,6 +124,7 @@ def share(fractal_id):
         print("Cant find fractal", fractal_id)
         return ("Not found", 404)
     return render_template("share.html", fractal=fractal, github=github, dev=dev(), user_hash=get_user_hash())
+
 
 @app.route("/index.html")
 def index():
