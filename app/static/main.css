@@ -3,6 +3,11 @@
   display: inline-block;
   text-align: center;
   margin: 1em;
+  font-size: 1.3em;
+}
+
+.fractal p {
+  text-align: center;
 }
 
 .fractal img {
@@ -16,6 +21,16 @@
   display: inline-block;
   width: 480px;
   margin: 1em;
+}
+
+body.share .fractal img {
+  width: 960px;
+  height: 640px;
+}
+
+body.share .fractal,
+body.share .fractal .label {
+  width: 960px;
 }
 
 .fractal .controls {

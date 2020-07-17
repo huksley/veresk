@@ -9,6 +9,7 @@ from flask_dance.contrib.github import make_github_blueprint, github
 
 from pymongo import ASCENDING
 from pymongo.errors import PyMongoError
+from bson import ObjectId
 
 from .plot import bp as plot_bp
 from .helpers import MongoJSONEncoder, ObjectIdConverter
@@ -27,7 +28,7 @@ def dev():
     return os.environ.get("AWS_EXECUTION_ENV") is None
 
 
-app.app.config['TEMPLATES_AUTO_RELOAD'] = dev()
+app.app.config['TEMPLATES_AUTO_RELOAD'] = 1 if dev() else 0
 
 if dev():
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -103,6 +104,17 @@ def static_from_root():
     """Mapping for static files"""
     return send_from_directory(app.app.static_folder, request.path[1:])
 
+
+@app.route('/share/<string:fractal_id>')
+def share(fractal_id):
+    """Share fractal page"""
+    fractal = mongo.db.fractals.find_one({
+        "_id": ObjectId(fractal_id)
+    })
+    if fractal is None:
+        print("Cant find fractal", fractal_id)
+        return ("Not found", 404)
+    return render_template("share.html", fractal=fractal, github=github, dev=dev(), user_hash=get_user_hash())
 
 @app.route("/index.html")
 def index():

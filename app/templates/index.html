@@ -34,7 +34,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename = 'main.js') }}"></script>
   </head>
 
-  <body>
+  <body class="index">
     <a
       class="github-fork-ribbon"
       href="https://github.com/huksley/veresk"
@@ -61,11 +61,6 @@
       <span class="fractal">
         <span class="label">
           c = {{fractal.complex_real}} + {{fractal.complex_imaginary}}*i
-          {% if not(fractal.user) %}
-          (root)
-          {% else %}
-          {{fractal.user}}
-          {% endif %}
         </span>
         <img
           src="plot/fractals.png?complex_real={{fractal.complex_real}}&amp;complex_imaginary={{fractal.complex_imaginary}}"
@@ -83,6 +78,7 @@
           >
           <a href="#" onClick="deleteFractal(this)" data-id="{{fractal._id}}">Delete</a>
           {% endif %}
+          <a href="/share/{{fractal._id}}">Share</a>
         </span>
       </span>
       {% endfor %}
