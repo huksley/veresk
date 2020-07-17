@@ -56,3 +56,7 @@ functions:
     events:
       - http: ANY /
       - http: "ANY {proxy+}"
+      - http:
+          method: get
+          path: "plot/{proxy+}"
+          contentHandling: CONVERT_TO_BINARY

@@ -2,7 +2,7 @@
 
 import os
 from hashlib import sha256
-from flask import redirect, render_template, send_from_directory, request, url_for, session
+from flask import redirect, render_template, send_from_directory, request, url_for, session, Response
 from connexion import FlaskApp
 from flask_pymongo import PyMongo
 from flask_dance.contrib.github import make_github_blueprint, github
@@ -71,7 +71,10 @@ def get_user_hash():
 def root():
     """Root page"""
     fractals = list(mongo.db.fractals.find())
-    return render_template("index.html", fractals=fractals, github=github, dev=dev(), user_hash=get_user_hash())
+    content = render_template("index.html", fractals=fractals, github=github, dev=dev(), user_hash=get_user_hash())
+    resp = Response(content)
+    resp.headers['Strict-Transport-Security'] = 'max-age=63072000' # 2 years
+    return resp
 
 
 @app.route("/user")

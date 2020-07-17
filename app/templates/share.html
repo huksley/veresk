@@ -5,7 +5,7 @@
     <link rel="manifest" href="site.webmanifest" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
     <link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
-    <link rel="canonical" href="https:&#x2F;&#x2F;veresk.ruslan.org" />
+    <link rel="canonical" href="https://veresk.ruslan.org/share/{{fractal._id}}" />
     <meta name="author" content="Ruslan Gainutdinov" />
     <meta name="theme-color" content="#4caf50" />
     <meta
@@ -15,15 +15,14 @@
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:site" content="@huksley_" />
     <meta property="og:site_name" content="Veresk" />
-    <meta property="og:url" content="https:&#x2F;&#x2F;veresk.ruslan.org/share/{{fractal._id}}" />
+    <meta property="og:url" content="https://veresk.ruslan.org/share/{{fractal._id}}" />
     <meta property="og:title" content="Fractal {{fractal._id}}" />
     <meta
       property="og:description"
       content="Be amazed by the power of fractals and their recursive nature. Fascinating dive into the math!"
     />
     <meta property="og:locale" content="en-us" />
-    <!-- meta property="og:image" content="{{ url_for('static', filename = 'preview.png') }}" --->
-    <meta property="og:image" content="/plot/fractals.png?complex_real={{fractal.complex_real}}&amp;complex_imaginary={{fractal.complex_imaginary}}" />
+    <meta property="og:image" content="https://veresk.ruslan.org/plot/fractals.png?complex_real={{fractal.complex_real}}&complex_imaginary={{fractal.complex_imaginary}}" />
     <meta property="og:image:alt" content="Generated Julia fractal"/>
     <meta property="og:type" content="article" />
     <link
