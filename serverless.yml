@@ -23,6 +23,8 @@ custom:
       - "image/*"
       - "application/font*"
       - "application/pdf"
+      # This allows binary conversion without Accept: image/* in request
+      - "*/*"
 
 provider:
   name: aws
@@ -56,7 +58,3 @@ functions:
     events:
       - http: ANY /
       - http: "ANY {proxy+}"
-      - http:
-          method: get
-          path: "plot/{proxy+}"
-          contentHandling: CONVERT_TO_BINARY
