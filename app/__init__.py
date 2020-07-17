@@ -22,23 +22,23 @@ app.app.register_blueprint(plot_bp)
 app.app.json_encoder = MongoJSONEncoder
 app.app.url_map.converters['objectid'] = ObjectIdConverter
 
-GITHUB_OAUTH_CLIENT_ID = os.environ[(
-    "" if dev() else "PROD_") + "GITHUB_OAUTH_CLIENT_ID"]
-GITHUB_OAUTH_CLIENT_SECRET = os.environ[(
-    "" if dev() else "PROD_") + "GITHUB_OAUTH_CLIENT_SECRET"]
-
 
 def dev():
     """Detect dev environment"""
     return os.environ.get("AWS_EXECUTION_ENV") is None
 
 
+GITHUB_OAUTH_CLIENT_ID = os.environ[(
+    "" if dev() else "PROD_") + "GITHUB_OAUTH_CLIENT_ID"]
+GITHUB_OAUTH_CLIENT_SECRET = os.environ[(
+    "" if dev() else "PROD_") + "GITHUB_OAUTH_CLIENT_SECRET"]
+
 app.app.config['TEMPLATES_AUTO_RELOAD'] = 1 if dev() else 0
 
 if dev():
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
-if GITHUB_OAUTH_CLIENT_ID is not "":
+if GITHUB_OAUTH_CLIENT_ID != "":
     oauth_blueprint = make_github_blueprint(
         client_id=GITHUB_OAUTH_CLIENT_ID,
         client_secret=GITHUB_OAUTH_CLIENT_SECRET
@@ -62,7 +62,7 @@ def get_user_hash():
     Return hashed ID of user.
     Locally we use 0 to indicate root, remotely we indicate None for anonymous.
     """
-    if GITHUB_OAUTH_CLIENT_ID is "":
+    if GITHUB_OAUTH_CLIENT_ID == "":
         return None
     if not github.authorized:
         return None
@@ -87,7 +87,7 @@ def root():
 @app.route("/user")
 def user():
     """Root page"""
-    if GITHUB_OAUTH_CLIENT_ID is "":
+    if GITHUB_OAUTH_CLIENT_ID == "":
         return ("No login support", 200)
     if not github.authorized:
         return redirect(url_for("github.login"))

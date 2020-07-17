@@ -1,14 +1,13 @@
 """Fractal drawing primitives"""
 import io
 import threading
+import os
 from flask import Response, Blueprint, request
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
-import os
 import boto3
 import botocore
-from werkzeug.wsgi import FileWrapper
 
 s3 = boto3.resource('s3')
 lock = threading.Lock()
@@ -21,11 +20,11 @@ bp = Blueprint('plot', __name__, url_prefix='/plot')
 
 @bp.route('/fractals.png')
 def fractals_png():
-    """Create example fractals"""
+    """Create fractal response from cache or newly generated image"""
     complex_real = float(request.args.get('complex_real', -0.42))
     complex_imaginary = float(request.args.get('complex_imaginary', 0.6))
 
-    if os.environ["CACHE_BUCKET"] is "":
+    if os.environ["CACHE_BUCKET"] == "":
         try:
             binary = fractals_generate_png(complex_real, complex_imaginary)
         except ValueError as e:
@@ -36,14 +35,16 @@ def fractals_png():
         resp.headers['Cache-Control'] = "public, max-age=31536000"
         return resp
 
-    key = "cache/img" + str(complex_real) + "x" + str(complex_imaginary) + ".png"
+    key = "cache/img" + str(complex_real) + "x" + \
+        str(complex_imaginary) + ".png"
     print("Checking cache, bucket", os.environ["CACHE_BUCKET"], "key", key)
     try:
         s3.Object(os.environ["CACHE_BUCKET"], key).load()
         bucket = s3.Bucket(os.environ["CACHE_BUCKET"])
         obj = bucket.Object(key)
         print("Sending cached, bucket", os.environ["CACHE_BUCKET"], "key", key)
-        resp = Response(io.BytesIO(obj.get()['Body'].read()), mimetype='image/png')
+        resp = Response(io.BytesIO(
+            obj.get()['Body'].read()), mimetype='image/png')
         resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.headers['Cache-Control'] = "public, max-age=31536000"
         return resp
@@ -60,19 +61,21 @@ def fractals_png():
             resp.headers['Access-Control-Allow-Origin'] = '*'
             resp.headers['Cache-Control'] = "public, max-age=31536000"
             return resp
-        else:
-            print("AWS error", e.response['Error']['Code'])
-            return ("Internal server error", 500)
+        print("AWS error", e.response['Error']['Code'])
+        return ("Internal server error", 500)
+
 
 def fractals_generate_png(complex_real, complex_imaginary):
+    """Generate fractal binary data"""
     m = 480*2
     n = 320*2
     print("Creating fractal, m", m, "n", n, "complex_real",
-        complex_real, "complex_imaginary", complex_imaginary)
+          complex_real, "complex_imaginary", complex_imaginary)
     with lock:
         fig = julia(m, n, complex_real, complex_imaginary)
     binary = fig.getvalue()
     return binary
+
 
 def julia(m, n, complex_real, complex_imaginary):
     """Draws Julia fractal, see example in
