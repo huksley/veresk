@@ -1,6 +1,6 @@
 <html>
   <head>
-    <meta name="viewport" content="width=500" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Generate and share your favorite fractals</title>
     <link rel="manifest" href="site.webmanifest" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
@@ -24,7 +24,7 @@
     <meta property="og:locale" content="en-us" />
     <!-- meta property="og:image" content="{{ url_for('static', filename = 'preview.png') }}" --->
     <meta property="og:image" content="https://raw.githack.com/huksley/veresk/master/app/static/preview.png" />
-    <meta property="og:image:alt" content="Preview of generated Julia fractal"/>
+    <meta property="og:image:alt" content="Preview of generated Julia fractal" />
     <meta property="og:type" content="article" />
     <link
       rel="stylesheet"
@@ -48,9 +48,8 @@
     <span class="mainControls">
       {% if dev or github.authorized %}
       <a href="#" onClick="showAddFractalForm(this)">Add fractal</a>
-      {% endif %}
-      {% if github.authorized %}
-      <a href="/logout">Logout</a> {{user_hash}}
+      {% endif %} {% if github.authorized %}
+      <a href="/logout">Logout</a>
       {% else %}
       <a href="/user">Login</a>
       {% endif %}
