@@ -15,8 +15,7 @@ class MongoJSONEncoder(JSONEncoder):
             return iso.datetime_isoformat(o)
         if isinstance(o, ObjectId):
             return str(o)
-        else:
-            return super().default(o)
+        return super().default(o)
 
 
 class ObjectIdConverter(BaseConverter):

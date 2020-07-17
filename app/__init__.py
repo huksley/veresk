@@ -1,10 +1,11 @@
 """Veresk web application"""
 
 import os
-
-from flask import redirect, render_template, send_from_directory, request
+from hashlib import sha256
+from flask import redirect, render_template, send_from_directory, request, url_for, session
 from connexion import FlaskApp
 from flask_pymongo import PyMongo
+from flask_dance.contrib.github import make_github_blueprint, github
 
 from pymongo import ASCENDING
 from pymongo.errors import PyMongoError
@@ -15,19 +16,79 @@ from .helpers import MongoJSONEncoder, ObjectIdConverter
 
 app = FlaskApp(__name__)
 app.add_api("api.yaml")
+app.app.secret_key = os.environ['FLASK_SECRET_KEY']
 app.app.register_blueprint(plot_bp)
 app.app.json_encoder = MongoJSONEncoder
 app.app.url_map.converters['objectid'] = ObjectIdConverter
-app.app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+
+def dev():
+    """Detect dev environment"""
+    return os.environ.get("AWS_EXECUTION_ENV") is None
+
+
+app.app.config['TEMPLATES_AUTO_RELOAD'] = dev()
+
+if dev():
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+oauth_blueprint = make_github_blueprint(
+    client_id=os.environ[("" if dev() else "PROD_") +
+                         "GITHUB_OAUTH_CLIENT_ID"],
+    client_secret=os.environ[("" if dev() else "PROD_") +
+                             "GITHUB_OAUTH_CLIENT_SECRET"],
+)
+app.app.register_blueprint(oauth_blueprint, url_prefix="/login")
+
 app.app.config["MONGO_URI"] = os.environ['MONGO_URI']
 mongo = PyMongo(app.app)
+
+
+@app.app.after_request
+def remove_if_invalid(response):
+    """Invalidate Flask session, if specified so at the end of the request"""
+    if "__invalidate__" in session:
+        response.delete_cookie(app.app.session_cookie_name)
+    return response
+
+
+def get_user_hash():
+    """
+    Return hashed ID of user.
+    Locally we use 0 to indicate root, remotely we indicate None for anonymous.
+    """
+    if not github.authorized:
+        return None
+    user_hash = sha256()
+    user_hash.update(app.app.secret_key.encode('utf-8'))
+    resp = github.get("/user")
+    user_hash.update(str(resp.json()["id"]).encode('utf-8'))
+    return user_hash.hexdigest()
 
 
 @app.route("/")
 def root():
     """Root page"""
     fractals = list(mongo.db.fractals.find())
-    return render_template("index.html", fractals=fractals)
+    return render_template("index.html", fractals=fractals, github=github, dev=dev(), user_hash=get_user_hash())
+
+
+@app.route("/user")
+def user():
+    """Root page"""
+    if not github.authorized:
+        return redirect(url_for("github.login"))
+    resp = github.get("/user")
+    print("User", resp.json())
+    assert resp.ok
+    return "You are @{login} on GitHub".format(login=resp.json()["login"])
+
+
+@app.route("/logout")
+def logout():
+    """Logout from app. Does not removes OAuth enrollement."""
+    session["__invalidate__"] = True
+    return redirect(url_for("index"))
 
 
 @app.route("/favicon.ico")
@@ -39,6 +100,7 @@ def favicon():
 @app.route('/robots.txt')
 @app.route('/site.webmanifest')
 def static_from_root():
+    """Mapping for static files"""
     return send_from_directory(app.app.static_folder, request.path[1:])
 
 

@@ -46,7 +46,14 @@
     <h1>Generate and share your favorite fractals</h1>
 
     <span class="mainControls">
+      {% if dev or github.authorized %}
       <a href="#" onClick="showAddFractalForm(this)">Add fractal</a>
+      {% endif %}
+      {% if github.authorized %}
+      <a href="/logout">Logout</a> {{user_hash}}
+      {% else %}
+      <a href="/user">Login</a>
+      {% endif %}
     </span>
 
     <div class="fractals">
@@ -54,12 +61,18 @@
       <span class="fractal">
         <span class="label">
           c = {{fractal.complex_real}} + {{fractal.complex_imaginary}}*i
+          {% if not(fractal.user) %}
+          (root)
+          {% else %}
+          {{fractal.user}}
+          {% endif %}
         </span>
         <img
           src="plot/fractals.png?complex_real={{fractal.complex_real}}&amp;complex_imaginary={{fractal.complex_imaginary}}"
           width="480"
         />
         <span class="controls">
+          {% if dev or fractal.user == user_hash %}
           <a
             href="#"
             onClick="editFractal(this)"
@@ -69,6 +82,7 @@
             >Edit</a
           >
           <a href="#" onClick="deleteFractal(this)" data-id="{{fractal._id}}">Delete</a>
+          {% endif %}
         </span>
       </span>
       {% endfor %}

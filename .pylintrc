@@ -1,2 +1,9 @@
 [BASIC]
 good-names=i,j,x,y,e,logger
+
+[FORMAT]
+max-line-length=120
+
+[DESIGN]
+# Maximum number of locals for function / method body
+max-locals=30
