@@ -19,6 +19,7 @@ dnspython = "*"
 isodate = "*"
 flask-dance = "*"
 boto3 = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.7"
