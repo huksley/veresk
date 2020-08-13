@@ -29,3 +29,4 @@ dev = "chamber exec veresk -- watchmedo auto-restart --recursive -p '*.py;*.yaml
 lint = "chamber exec veresk -- pylint app"
 deploy = "chamber exec veresk -- npx serverless deploy"
 serve = "chamber exec veresk -- npx serverless wsgi serve"
+sls = "chamber exec veresk -- npx serverless"
