@@ -17,6 +17,10 @@
   border: 1px solid #4caf50;
 }
 
+.fractal img.selection {
+  cursor: crosshair;
+}
+
 .fractal .label {
   display: inline-block;
   width: 480px;

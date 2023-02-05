@@ -68,7 +68,7 @@ function editFractal(link) {
 /**
  * @param {HTMLAnchorElement} link
  */
-function deleteFractal(link) {
+function deleteFractal(link, event) {
   const id = link.getAttribute("data-id");
   fetch("fractals/" + id, {
     method: "DELETE",

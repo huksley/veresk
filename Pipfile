@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 autopep8 = "*"
 pylint = "*"
-watchdog = "*"
+watchdog = {extras = ["watchmedo"], version = "*"}
 argh = "*"
 
 [packages]
@@ -19,14 +19,15 @@ dnspython = "*"
 isodate = "*"
 flask-dance = "*"
 boto3 = "*"
+watchdog = {extras = ["watchmedo"], version = "*"}
 
 [requires]
-python_version = "3.7"
+python_version = "3.9"
 
 [scripts]
-app = "chamber exec veresk -- python -m app"
-dev = "chamber exec veresk -- watchmedo auto-restart --recursive -p '*.py;*.yaml' -i '.serverless' python -- -m app"
-lint = "chamber exec veresk -- pylint app"
-deploy = "chamber exec veresk -- npx serverless deploy"
-serve = "chamber exec veresk -- npx serverless wsgi serve"
-sls = "chamber exec veresk -- npx serverless"
+app = "python -m app"
+dev = "watchmedo auto-restart --recursive -p '*.py;*.yaml' -i '.serverless' python -- -m app"
+lint = "pylint app"
+deploy = "npx serverless deploy"
+serve = "npx serverless wsgi serve"
+sls = "npx serverless"

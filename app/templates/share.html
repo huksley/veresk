@@ -1,71 +1,64 @@
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fractal {{fractal._id}}</title>
-    <link rel="manifest" href="site.webmanifest" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
-    <link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
-    <link rel="canonical" href="https://veresk.ruslan.org/share/{{fractal._id}}" />
-    <meta name="author" content="Ruslan Gainutdinov" />
-    <meta name="theme-color" content="#4caf50" />
-    <meta
-      name="description"
-      content="Be amazed by the power of fractals and their recursive nature. Fascinating dive into the math!"
-    />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:site" content="@huksley_" />
-    <meta property="og:site_name" content="Veresk" />
-    <meta property="og:url" content="https://veresk.ruslan.org/share/{{fractal._id}}" />
-    <meta property="og:title" content="Fractal {{fractal._id}}" />
-    <meta
-      property="og:description"
-      content="Be amazed by the power of fractals and their recursive nature. Fascinating dive into the math!"
-    />
-    <meta property="og:locale" content="en-us" />
-    <meta property="og:image" content="https://veresk.ruslan.org/plot/fractals.png?complex_real={{fractal.complex_real}}&complex_imaginary={{fractal.complex_imaginary}}" />
-    <meta property="og:image:alt" content="Generated Julia fractal"/>
-    <meta property="og:type" content="article" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
-    />
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'main.css') }}" />
-    <script type="text/javascript" src="{{ url_for('static', filename = 'main.js') }}"></script>
-  </head>
 
-  <body class="share">
-    <a
-      class="github-fork-ribbon"
-      href="https://github.com/huksley/veresk"
-      data-ribbon="Fork me on GitHub"
-      title="Fork me on GitHub"
-      >Fork me on GitHub</a
-    >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fractal {{fractal._id}}</title>
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
+  <link rel="apple-touch-icon" type="image/png" href="{{ url_for('static', filename = 'icon.svg') }}" />
+  <link rel="canonical" href="https://veresk.ruslan.org/share/{{fractal._id}}" />
+  <meta name="author" content="Ruslan Gainutdinov" />
+  <meta name="theme-color" content="#4caf50" />
+  <meta name="description"
+    content="Be amazed by the power of fractals and their recursive nature. Fascinating dive into the math!" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:site" content="@huksley_" />
+  <meta property="og:site_name" content="Veresk" />
+  <meta property="og:url" content="https://veresk.ruslan.org/share/{{fractal._id}}" />
+  <meta property="og:title" content="Fractal {{fractal._id}}" />
+  <meta property="og:description"
+    content="Be amazed by the power of fractals and their recursive nature. Fascinating dive into the math!" />
+  <meta property="og:locale" content="en-us" />
+  <meta property="og:image"
+    content="https://veresk.ruslan.org/plot/fractals.png?complex_real={{fractal.complex_real}}&complex_imaginary={{fractal.complex_imaginary}}" />
+  <meta property="og:image:alt" content="Generated Julia fractal" />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'main.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename = 'main.js') }}"></script>
+</head>
 
-    <h1>Fractal {{fractal._id}}</h1>
+<body class="share">
+  <a class="github-fork-ribbon" href="https://github.com/huksley/veresk" data-ribbon="Fork me on GitHub"
+    title="Fork me on GitHub">Fork me on GitHub</a>
 
-    <span class="mainControls">
-      <a href="/">All fractals</a>
-    </span>
+  <h1>Fractal {{fractal._id}}</h1>
 
-    <div class="fractals">
-      <span class="fractal">
-        <span class="label">
-          c = {{fractal.complex_real}} + {{fractal.complex_imaginary}}*i
-        </span>
-        <img
-          src="/plot/fractals.png?complex_real={{fractal.complex_real}}&amp;complex_imaginary={{fractal.complex_imaginary}}"
-          width="960"
-        />
+  <span class="mainControls">
+    <a href="/">All fractals</a>
+  </span>
+
+  <div class="fractals">
+    <span class="fractal">
+      <span class="label">
+        c = {{fractal.complex_real}} + {{fractal.complex_imaginary}}*i
+      </span>
+      <img class="selection"
+        src="/plot/fractals.png?complex_real={{fractal.complex_real}}&amp;complex_imaginary={{fractal.complex_imaginary}}"
+        width="960" />
 
       <p>
-        What is a fractal? It is a picture produced my mathematical expression which have recursive nature with unlimited zooming capabilities.</p>
-        <p>
-As image generation controlled by expression, changing the expression even in the slighest manner will result in a sometimes complete different image.</p>
-<p>
-See <a href="https://en.wikipedia.org/wiki/Fractal">Wikipedia</a> page for more introduction.</p>
+        What is a fractal? It is a picture produced my mathematical expression which have recursive nature with
+        unlimited zooming capabilities.</p>
+      <p>
+        As image generation controlled by expression, changing the expression even in the slighest manner will result in
+        a sometimes complete different image.</p>
+      <p>
+        See <a href="https://en.wikipedia.org/wiki/Fractal">Wikipedia</a> page for more introduction.</p>
       </p>
-      </span>
-    </div>
-  </body>
+    </span>
+  </div>
+</body>
+
 </html>

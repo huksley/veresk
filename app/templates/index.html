@@ -61,10 +61,11 @@
         <span class="label">
           c = {{fractal.complex_real}} + {{fractal.complex_imaginary}}*i
         </span>
+        <a href="/share/{{fractal._id}}">
         <img
           src="plot/fractals.png?complex_real={{fractal.complex_real}}&amp;complex_imaginary={{fractal.complex_imaginary}}"
           width="480"
-        />
+        /></a>
         <span class="controls">
           {% if (dev and user_hash == None) or fractal.user == user_hash %}
           <a
@@ -75,7 +76,7 @@
             data-complex-imaginary="{{fractal.complex_imaginary}}"
             >Edit</a
           >
-          <a href="#" onClick="deleteFractal(this)" data-id="{{fractal._id}}">Delete</a>
+          <a href="#" onClick="deleteFractal(this, event)" data-id="{{fractal._id}}">Delete</a>
           {% endif %}
           <a href="/share/{{fractal._id}}">Share</a>
         </span>
